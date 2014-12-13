@@ -14,17 +14,16 @@ using namespace std;
 
 void clearScreen();
 void printGallows(int);
-void displayUsedLetters(char[]);
 bool playAgain();
-void getWordArray();
-void getWord();
-char checkInput(string);
+char getInput();
 int countWords(string);
 void fillWordArray(string*, string);
 
 
 int main()
 {
+	//Initializations
+
 	//play again bool flag
 	bool keepPlaying = false;
 
@@ -43,19 +42,121 @@ int main()
 	srand(time(NULL));
 	
 	
-	//Game Loop
+	//Outer game loop, when looped will reset variables
 	do
 	{
+		//keep track of wrong guesses
+		int wrongGuesses = 0; 
+		bool guessedWord = false;
+		bool endgame = false;
+
 		//gets random number
 		int RNG = rand() % wordCount;
 
 		//gets word and length of word
-		string gameWord = wordArray[RNG];
+		string& gameWord = wordArray[RNG];
 		int wordLength = gameWord.length();
 
+		//bool array to track guessed letters
+		bool* guessedLetters = new bool[wordLength];
+		//populate array
+		for (int i = 0; i < wordLength; i++)
+			guessedLetters[i] = false;
 
+		//internal game loop, start of game
+		do
+		{
+			//clears the screen
+			clearScreen();
+
+			//prints hangman
+			printGallows(wrongGuesses);
+
+			//Check win/lose conditions
+			if (wrongGuesses >= 6)
+			{
+				cout << "You are dead!" << endl;
+				cout << "The word was: " << gameWord << endl;
+				endgame = true;
+			}
+			else if (guessedWord)
+			{
+				cout << "You won!" << endl;
+				cout << "You guessed the word: " << gameWord << endl;
+				endgame = true;
+			}
+			else //Prints hidden word + guessed letters
+			{
+				for (int i = 0; i < wordLength; i++)
+				{
+					if (guessedLetters[i])
+						cout << gameWord[i];
+					else
+						cout << "_";
+				}
+			}
+			cout << endl;
+
+
+		} while (endgame);
 	} while (keepPlaying);
+
+
+
 	return 0;
+}
+
+char getInput()
+{
+	string input = "";
+	char cleanedInput;
+	bool changed;
+	bool goodInput = false;
+
+	while (!goodInput)
+	{
+
+
+		//get input
+		cout << "Please enter a letter: ";
+		getline(cin, input);
+		cout << endl;
+
+		do //whitespace cleanup
+		{
+			changed = false;
+			for (int i = 0; i < input.length() - 1; i++)
+			{
+				if (input.at(i) == ' ' && input.at(i + 1) == ' ')
+				{
+					input.erase(i, 1);
+					changed = true;
+				}
+			}
+		} while (changed);
+
+		//check if more than one letter
+		if (input.length > 1)
+		{
+			cout << "You can only input one letter." << endl;
+		}
+
+		if (input.length == 1)
+		{
+			char temp = input[0];
+			if (isalpha(temp))
+			{
+				tolower(temp);
+				cleanedInput = temp;
+				goodInput = true;
+			}
+			else if (!isalpha(temp))
+			{
+				cout << "You must enter a letter." << endl;
+			}
+		}
+	}
+	return cleanedInput;
 }
 
 void fillWordArray(string* Array, string fileName)
