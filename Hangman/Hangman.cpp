@@ -84,7 +84,7 @@ int main()
 			usedAlpha(alphabet, alphaCheck);
 
 			//Check win/lose conditions
-			if (wrongGuesses >= 6)
+			if (wrongGuesses >= 8)
 			{
 				cout << "You are dead!" << endl;
 				cout << "The word was: " << gameWord << endl;
@@ -109,6 +109,7 @@ int main()
 			}
 			cout << endl << endl;
 			
+			//prevents asking for more input if the endgame flag has already been set
 			if (!endgame)
 				guess = getInput();
 
@@ -144,6 +145,7 @@ int main()
 
 		} while (!endgame);
 		
+		
 		delete[] guessedLetters;
 		
 		keepPlaying = playAgain();
@@ -156,6 +158,16 @@ int main()
 	return 0;
 }
 
+/******************************************************************
+The storeAlpha() function takes in a character, and two arrays used
+to compare to the alphabet. AlphaCheck is used as a parallel array
+to the constant alphabet array. The function loops through the
+alphabet and when it finds the location for the character passed in
+it marks the location by setting a flag on the same location in
+alphacheck. This keeps track of (wrong) guesses that are made.
+(correct) guesses are displayed on the screen already so I kept them
+from being tracked here.
+*******************************************************************/
 void storeAlpha(char used, const char alphabet[], bool alphaCheck[])
 {
 	for (int i = 0; i < 26; i++)
@@ -167,6 +179,12 @@ void storeAlpha(char used, const char alphabet[], bool alphaCheck[])
 	}
 }
 
+/*******************************************************************
+usedAlpha() simply loops through the alphabet array and the bool
+array that tracks what letters have been used. When it finds a
+letter that has been used it sends it out to the console so that
+the user can see what letters they have already guessed wrong.
+*******************************************************************/
 void usedAlpha(const char alphabet[], bool alphaCheck[])
 {
 	cout << "Used letters: ";
@@ -179,6 +197,12 @@ void usedAlpha(const char alphabet[], bool alphaCheck[])
 	}
 	cout << endl;
 }
+
+/*********************************************************************
+playAgain() simple asks the user for input, uses the getInput function
+to receive and sanatize the input, and will either loop the game again
+if the user says Y or y, otherwise it will end the game.
+*********************************************************************/
 bool playAgain()
 {
 	cout << "Do you wish to play again? (y/n)" << endl;
@@ -193,6 +217,14 @@ bool playAgain()
 		return false;
 }
 
+/************************************************************************
+the getInput() function asks the user for input, which it will then clear
+extraneous white spaces from, check to make sure only one character has
+been entered, checks to make sure the char is an alpha, and if it fails
+any of those tests it loops asking for correct input. When it has finished
+and validated input it converts it to a char and returns it to the calling
+function.
+*************************************************************************/
 char getInput()
 {
 	string input = "";
@@ -248,6 +280,12 @@ char getInput()
 	return cleanedInput;
 }
 
+/**************************************************************
+fillWordArray() opens up a specified file and fills the array
+that has been passed into it with words from the file. This
+function works closely with the countWords array so I did not
+add in extra functionality / error checking here.
+**************************************************************/
 void fillWordArray(string* Array, string fileName)
 {
 	string temp = "";
@@ -270,6 +308,11 @@ void fillWordArray(string* Array, string fileName)
 
 }
 
+/****************************************************************
+countWords() takes in a filename, opens the file if it can find it
+then goes through the file taking up a count of its contents. Once
+the file has been counted it returns the number of items in the file
+****************************************************************/
 int countWords(string fileName)
 {
 	int count = 0;
@@ -290,21 +333,34 @@ int countWords(string fileName)
 	return count;
 }
 
+/*******************************************************************
+clearScreen() is a simple for loop that makes the console print out
+25 nextline characters, essentially wiping the screen for the basic
+console window. Fairly simple, and can be customized to do more or
+less easily.
+*******************************************************************/
 void clearScreen()
 {
 	for (int i = 0; i < 25; i++)
 		cout << endl;
 }
 
+
+/*******************************************************************
+printGallows() takes in an int number of wrong guesses which it puts
+into a switch statement to determine which level of hangman to print
+to the console. 
+*******************************************************************/
 void printGallows(int x)
 {
-	const int zero = 0, one = 1, two = 2, three = 3, four = 4, five = 5, six = 6;
+	const int zero = 0, one = 1, two = 2, three = 3, four = 4, five = 5, six = 6, seven = 7, eight = 8;
 
 	switch (x)
 	{
 	case zero:
 		cout << "_______" << endl;
 		cout << "|     |" << endl;
+		cout << "|" << endl;
 		cout << "|" << endl;
 		cout << "|" << endl;
 		cout << "|" << endl;
@@ -319,6 +375,7 @@ void printGallows(int x)
 		cout << "|     O" << endl;
 		cout << "|" << endl;
 		cout << "|" << endl;
+		cout << "|" << endl;
 		cout << "|" << endl;		
 		cout << "#########" << endl;
 		cout << endl;
@@ -329,6 +386,7 @@ void printGallows(int x)
 		cout << "|     |" << endl;
 		cout << "|     O" << endl;
 		cout << "|    /" << endl;
+		cout << "|" << endl;
 		cout << "|" << endl;
 		cout << "|" << endl;
 		cout << "#########" << endl;
@@ -342,6 +400,7 @@ void printGallows(int x)
 		cout << "|    /X" << endl;
 		cout << "|" << endl;
 		cout << "|" << endl;
+		cout << "|" << endl;
 		cout << "#########" << endl;
 		cout << endl;
 		break;
@@ -351,6 +410,7 @@ void printGallows(int x)
 		cout << "|     |" << endl;
 		cout << "|     O" << endl;
 		cout << "|    /X\\" << endl;
+		cout << "|" << endl;
 		cout << "|" << endl;
 		cout << "|" << endl;
 		cout << "#########" << endl;
@@ -364,6 +424,7 @@ void printGallows(int x)
 		cout << "|    /X\\" << endl;
 		cout << "|    /" << endl;
 		cout << "|" << endl;
+		cout << "|" << endl;
 		cout << "#########" << endl;
 		cout << endl;
 		break;
@@ -374,6 +435,31 @@ void printGallows(int x)
 		cout << "|     O" << endl;
 		cout << "|    /X\\" << endl;
 		cout << "|    / \\" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "#########" << endl;
+		cout << endl;
+		break;
+
+	case seven:
+		cout << "_______" << endl;
+		cout << "|     |" << endl;
+		cout << "|     O" << endl;
+		cout << "|    /X\\" << endl;
+		cout << "|   _/ \\" << endl;
+		cout << "|" << endl;
+		cout << "|" << endl;
+		cout << "#########" << endl;
+		cout << endl;
+		break;
+
+	case eight:
+		cout << "_______" << endl;
+		cout << "|     |" << endl;
+		cout << "|     O" << endl;
+		cout << "|    /X\\" << endl;
+		cout << "|   _/ \\_" << endl;
+		cout << "|" << endl;
 		cout << "|" << endl;
 		cout << "#########" << endl;
 		cout << endl;
