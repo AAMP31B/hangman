@@ -267,6 +267,7 @@ void printGallows(int x)
 		cout << "|" << endl;
 		cout << "|" << endl;
 		cout << "#########" << endl;
+		cout << endl;
 		break;
 	
 	case one:
@@ -277,6 +278,7 @@ void printGallows(int x)
 		cout << "|" << endl;
 		cout << "|" << endl;		
 		cout << "#########" << endl;
+		cout << endl;
 		break;
 
 	case two:
@@ -287,6 +289,7 @@ void printGallows(int x)
 		cout << "|" << endl;
 		cout << "|" << endl;
 		cout << "#########" << endl;
+		cout << endl;
 		break;
 
 	case three:
@@ -297,6 +300,7 @@ void printGallows(int x)
 		cout << "|" << endl;
 		cout << "|" << endl;
 		cout << "#########" << endl;
+		cout << endl;
 		break;
 
 	case four:
@@ -307,6 +311,7 @@ void printGallows(int x)
 		cout << "|" << endl;
 		cout << "|" << endl;
 		cout << "#########" << endl;
+		cout << endl;
 		break;
 
 	case five:
@@ -317,6 +322,7 @@ void printGallows(int x)
 		cout << "|    /" << endl;
 		cout << "|" << endl;
 		cout << "#########" << endl;
+		cout << endl;
 		break;
 
 	case six:
@@ -327,6 +333,7 @@ void printGallows(int x)
 		cout << "|    / \\" << endl;
 		cout << "|" << endl;
 		cout << "#########" << endl;
+		cout << endl;
 		break;
 	}
 }
