@@ -168,8 +168,9 @@ char getInput()
 
 		do //whitespace cleanup
 		{
+			int length = (input.length() - 1);
 			changed = false;
-			for (int i = 0; i < input.length() - 1; i++)
+			for (int i = 0; i < length; i++)
 			{
 				if (input.at(i) == ' ' && input.at(i + 1) == ' ')
 				{
@@ -179,13 +180,14 @@ char getInput()
 			}
 		} while (changed);
 
+
 		//check if more than one letter
-		if (input.length > 1)
+		if (input.length() > 1)
 		{
 			cout << "You can only input one letter." << endl;
 		}
 
-		if (input.length == 1)
+		if (input.length() == 1)
 		{
 			char temp = input[0];
 			if (isalpha(temp))
