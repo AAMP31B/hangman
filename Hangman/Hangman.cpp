@@ -245,7 +245,7 @@ char getInput()
 		{
 			int length = (input.length() - 1);
 			changed = false;
-			for (int i = 0; i < length; i++)
+			for (int i = 1; i < length; i++)
 			{
 				if (input.at(i) == ' ' && input.at(i + 1) == ' ')
 				{
