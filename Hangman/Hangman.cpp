@@ -18,7 +18,11 @@ bool playAgain();
 char getInput();
 int countWords(string);
 void fillWordArray(string*, string);
+void usedAlpha();
+void storeAlpha(char);
 
+const char alphabet[] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+bool alphaCheck[] = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
 int main()
 {
@@ -49,6 +53,7 @@ int main()
 		int wrongGuesses = 0; 
 		bool guessedWord = false;
 		bool endgame = false;
+		char guess;
 
 		//gets random number
 		int RNG = rand() % wordCount;
@@ -72,6 +77,9 @@ int main()
 			//prints hangman
 			printGallows(wrongGuesses);
 
+			//prints used letters
+			usedAlpha();
+
 			//Check win/lose conditions
 			if (wrongGuesses >= 6)
 			{
@@ -87,17 +95,19 @@ int main()
 			}
 			else //Prints hidden word + guessed letters
 			{
+				cout << endl;
 				for (int i = 0; i < wordLength; i++)
 				{
 					if (guessedLetters[i])
 						cout << gameWord[i];
 					else
-						cout << "_";
+						cout << "-";
 				}
 			}
-			cout << endl;
-
-			char guess = getInput();
+			cout << endl << endl;
+			
+			if (!endgame)
+				guess = getInput();
 
 
 			//test guess char against wordArray and set guessedLetter flags
@@ -114,7 +124,10 @@ int main()
 
 			//if letter isn't found then add to wrong guess variable
 			if (!isLetterinWord)
+			{
 				wrongGuesses++;
+				storeAlpha(guess);
+			}
 
 			//check if word has been solved
 			//set game condition to true, and then check if it should be changed to false
@@ -140,6 +153,29 @@ int main()
 	return 0;
 }
 
+void storeAlpha(char used)
+{
+	for (int i = 0; i < 26; i++)
+	{
+		if (alphabet[i] == used)
+		{
+			alphaCheck[i] = true;
+		}
+	}
+}
+
+void usedAlpha()
+{
+	cout << "Used letters: ";
+	for (int i = 0; i < 26; i++)
+	{
+		if (alphaCheck[i])
+		{
+			cout << alphabet[i];
+		}
+	}
+	cout << endl;
+}
 bool playAgain()
 {
 	cout << "Do you wish to play again? (y/n)" << endl;
@@ -148,6 +184,10 @@ bool playAgain()
 	{
 		return false;
 	}
+	if (play == 'y')
+		return true;
+	else
+		return false;
 }
 
 char getInput()
