@@ -14,3 +14,7 @@ walrus
 shark
 carpet
 camera
+programming
+cigar
+vehicle
+anaconda
