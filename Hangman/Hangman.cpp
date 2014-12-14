@@ -18,11 +18,10 @@ bool playAgain();
 char getInput();
 int countWords(string);
 void fillWordArray(string*, string);
-void usedAlpha();
-void storeAlpha(char);
+void usedAlpha(const char[], bool[]);
+void storeAlpha(char, const char[], bool[]);
 
-const char alphabet[] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-bool alphaCheck[] = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+
 
 int main()
 {
@@ -68,6 +67,10 @@ int main()
 		for (int i = 0; i < wordLength; i++)
 			guessedLetters[i] = false;
 
+		//arrays to check for used letters
+		const char alphabet[] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+		bool alphaCheck[] = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+
 		//internal game loop, start of game
 		do
 		{
@@ -78,7 +81,7 @@ int main()
 			printGallows(wrongGuesses);
 
 			//prints used letters
-			usedAlpha();
+			usedAlpha(alphabet, alphaCheck);
 
 			//Check win/lose conditions
 			if (wrongGuesses >= 6)
@@ -126,7 +129,7 @@ int main()
 			if (!isLetterinWord)
 			{
 				wrongGuesses++;
-				storeAlpha(guess);
+				storeAlpha(guess, alphabet, alphaCheck);
 			}
 
 			//check if word has been solved
@@ -153,7 +156,7 @@ int main()
 	return 0;
 }
 
-void storeAlpha(char used)
+void storeAlpha(char used, const char alphabet[], bool alphaCheck[])
 {
 	for (int i = 0; i < 26; i++)
 	{
@@ -164,7 +167,7 @@ void storeAlpha(char used)
 	}
 }
 
-void usedAlpha()
+void usedAlpha(const char alphabet[], bool alphaCheck[])
 {
 	cout << "Used letters: ";
 	for (int i = 0; i < 26; i++)
