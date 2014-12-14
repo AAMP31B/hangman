@@ -20,6 +20,7 @@ int countWords(string);
 void fillWordArray(string*, string);
 void usedAlpha(const char[], bool[]);
 void storeAlpha(char, const char[], bool[]);
+bool usedLetter(const char[], const bool[], char);
 
 
 
@@ -110,9 +111,21 @@ int main()
 			cout << endl << endl;
 			
 			//prevents asking for more input if the endgame flag has already been set
-			if (!endgame)
-				guess = getInput();
+			//also added in duplicate check
+			bool badLetter;
+			
+			do
+			{
+				badLetter = false;
+				if (!endgame)
+				{
+					guess = getInput();
+					badLetter = usedLetter(alphabet, alphaCheck, guess);
+				}
+				if (badLetter)
+					cout << "Duplicate Letter"<<endl;
 
+			} while (badLetter);
 
 			//test guess char against wordArray and set guessedLetter flags
 			bool isLetterinWord = false;
@@ -130,9 +143,10 @@ int main()
 			if (!isLetterinWord)
 			{
 				wrongGuesses++;
-				storeAlpha(guess, alphabet, alphaCheck);
+				
 			}
-
+			
+			storeAlpha(guess, alphabet, alphaCheck);
 			//check if word has been solved
 			//set game condition to true, and then check if it should be changed to false
 			guessedWord = true;
@@ -196,6 +210,22 @@ void usedAlpha(const char alphabet[], bool alphaCheck[])
 		}
 	}
 	cout << endl;
+}
+/********************************************************************
+Returns true or false on whether the letter being used has been used
+previously. If it has been used already it will send back true and
+the calling function will get a new letter.
+********************************************************************/
+bool usedLetter(const char alphabet[], const bool alphaCheck[], char check)
+{
+	bool hasThisLetterBeenUsed = false;
+	for (int i = 0; i < 26; i++)
+	{
+		if (alphabet[i] == check)
+			if (alphaCheck[i] == true)
+				hasThisLetterBeenUsed = true;
+	}
+	return hasThisLetterBeenUsed;
 }
 
 /*********************************************************************
