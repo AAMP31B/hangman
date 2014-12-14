@@ -243,9 +243,9 @@ char getInput()
 
 		do //whitespace cleanup
 		{
-			int length = (input.length() - 1);
+			int length = input.length();
 			changed = false;
-			for (int i = 1; i < length; i++)
+			for (int i = 0; i < length-1; i++)
 			{
 				if (input.at(i) == ' ' && input.at(i + 1) == ' ')
 				{
@@ -255,6 +255,12 @@ char getInput()
 			}
 		} while (changed);
 
+		//check for single spaces
+		for (int i = 0; i < input.length(); i++)
+		{
+			if (input.at(i) == ' ')
+				input.erase(i, 1);
+		}
 
 		//check if more than one letter
 		if (input.length() > 1)
