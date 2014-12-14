@@ -25,7 +25,7 @@ int main()
 	//Initializations
 
 	//play again bool flag
-	bool keepPlaying = false;
+	bool keepPlaying = true;
 
 	//store filename in a string for passing 
 	string fileName = "wordList.txt";
@@ -97,13 +97,57 @@ int main()
 			}
 			cout << endl;
 
+			char guess = getInput();
 
-		} while (endgame);
+
+			//test guess char against wordArray and set guessedLetter flags
+			bool isLetterinWord = false;
+
+			for (int i = 0; i < wordLength; i++)
+			{
+				if (!guessedLetters[i] && (gameWord[i] == guess))
+				{
+					guessedLetters[i] = true;
+					isLetterinWord = true;
+				}
+			}
+
+			//if letter isn't found then add to wrong guess variable
+			if (!isLetterinWord)
+				wrongGuesses++;
+
+			//check if word has been solved
+			//set game condition to true, and then check if it should be changed to false
+			guessedWord = true;
+			for (int i = 0; i < wordLength; i++)
+			{
+				if (!guessedLetters[i])
+					guessedWord = false;
+			}
+
+
+		} while (!endgame);
+		
+		delete[] guessedLetters;
+		
+		keepPlaying = playAgain();
+
 	} while (keepPlaying);
 
+	delete[] wordArray;
 
 
 	return 0;
+}
+
+bool playAgain()
+{
+	cout << "Do you wish to play again? (y/n)" << endl;
+	char play = getInput();
+	if (play == 'n')
+	{
+		return false;
+	}
 }
 
 char getInput()
